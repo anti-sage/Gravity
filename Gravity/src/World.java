@@ -11,6 +11,8 @@ public class World {
 	public static final double MAX_PLANET_SIZE = 0.4;
 	
 	private List<Planet> planets = new ArrayList<>();
+	private int startPlanet;
+	private int endPlanet;
 	
 	public void addPlanet(Planet planet) {
 		planets.add(planet);
@@ -20,15 +22,20 @@ public class World {
 		return planets;
 	}
 	
+	public int numPlanets() {
+		return planets.size();
+	}
+	
 	public static World createRandom() {
 		Random r = MainWindow.rand;
 		
-		int numPlanets = r.nextInt(MAX_PLANETS + 1 - MIN_PLANETS) + MIN_PLANETS;
+		if(MAX_PLANETS < 2) return null;
 		
+		int numPlanets = r.nextInt(MAX_PLANETS + 1 - MIN_PLANETS) + MIN_PLANETS;
 		
 		World world = new World();
 		
-		for(int i = 0; i < numPlanets; ++i) {
+		for(int i = 0; i < numPlanets; i++) {
 			double radius = r.nextDouble() * (MAX_PLANET_SIZE - MIN_PLANET_SIZE) + MIN_PLANET_SIZE;
 			double x = r.nextDouble() * (1-radius*2) + radius;
 			double y = r.nextDouble() * (1-radius*2) + radius;
@@ -48,10 +55,40 @@ public class World {
 			}
 			
 			else {
-				--i;
+				i--;
 			}
 		}
 		
+		int startPlanetId = r.nextInt(world.numPlanets());
+		int endPlanetId = r.nextInt(world.numPlanets() - 1);
+		
+		if(endPlanetId >= startPlanetId) {
+			endPlanetId++;
+		}
+
+		world.setStartPlanet(startPlanetId);
+		world.setEndPlanet(endPlanetId);
+		
 		return world;
+	}
+
+	public int getStartPlanet() {
+		return startPlanet;
+	}
+
+	public void setStartPlanet(int startPlanet) {
+		this.startPlanet = startPlanet;
+	}
+
+	public int getEndPlanet() {
+		return endPlanet;
+	}
+
+	public void setEndPlanet(int endPlanet) {
+		this.endPlanet = endPlanet;
+	}
+	
+	public Planet getPlanet(int i) {
+		return planets.get(i);
 	}
 }

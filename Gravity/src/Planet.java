@@ -33,4 +33,8 @@ public class Planet {
 	public boolean overlaps(Planet other) {
 		return getPos().distance(other.getPos()) < this.getRadius() + other.getRadius();
 	}
+	
+	public void draw(DrawHelper dh) {
+		dh.fillOval(pos.getX(), pos.getY(), radius, radius);
+	}
 }

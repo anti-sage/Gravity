@@ -4,6 +4,7 @@ import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -38,7 +39,6 @@ public class MainWindow extends Application {
 	public static final String WINDOW_NAME = "Gravity";
 //	public final int WINDOW_WIDTH = 800;
 //	public final int WINDOW_HEIGHT = 600;
-	
 	public static final Random rand = new Random();
 	
 	public static void main(String[] args) {
@@ -70,14 +70,15 @@ public class MainWindow extends Application {
 	}
 	
 	private void updateCanvas(GraphicsContext gc, World world) {
-		gc.setFill(Color.WHITE);
-
-		double width = gc.getCanvas().getWidth();
-		double height = gc.getCanvas().getHeight();
-		double scalar = Math.min(width, height);
+		DrawHelper dh = new DrawHelper(gc, world);
 		
+		dh.setFill(Color.WHITE);
+
 		for(Planet planet : world.getPlanets()) {
-			gc.fillOval(planet.getPos().getX() * width, planet.getPos().getY() * height, planet.getRadius() * scalar, planet.getRadius() * scalar);
+			planet.draw(dh);
 		}
+		
+		new Ship(new Point2D(0.4, 0.4), 100).draw(dh);
+		//world.getPlanet(world.getStartPlanet()).
 	}
 }
