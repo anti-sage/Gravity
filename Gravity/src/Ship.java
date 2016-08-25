@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 public class Ship {
 	public static final double LENGTH = 20;
 	private Point2D pos;
-	private double rot;
+	private Point2D dir;
 	private World world;
 	private Planet planetFixedTo;
 	
@@ -16,8 +16,14 @@ public class Ship {
 		
 	}
 	
-	public void launch(Point2D dir) {
-		
+	public void launch(Point2D cursor) {
+		this.dir = cursor.subtract(pos);
+		step();
+	}
+	
+	public void step() {
+		Point2D newPos = pos.add(dir.normalize().multiply(2));
+		pos = newPos;
 	}
 	
 	public void affixToPlanet(Planet planet) {
@@ -45,11 +51,11 @@ public class Ship {
 		this.pos = pos;
 	}
 
-	public double getRot() {
-		return rot;
+	public Point2D getDir() {
+		return dir;
 	}
 
-	public void setRot(double rot) {
-		this.rot = rot;
+	public void setDir(Point2D dir) {
+		this.dir = dir;
 	}
 }

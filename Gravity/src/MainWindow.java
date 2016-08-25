@@ -42,7 +42,7 @@ public class MainWindow extends Application {
 	public static final Random rand = new Random();
 	
 	public enum Step {
-		PLACE, AIM, LAUNCH
+		PLACE, AIM, FLY
 	}
 	
 	private Step step = Step.PLACE;
@@ -86,6 +86,10 @@ public class MainWindow extends Application {
 		gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
 		
 		DrawHelper dh = new DrawHelper(gc, world);
+		
+		if(step == Step.FLY) {
+			ship.step();
+		}
 
 		for(Planet planet : world.getPlanets()) {
 			planet.draw(dh);
@@ -117,7 +121,8 @@ public class MainWindow extends Application {
 			}
 			
 			else if(step == Step.AIM) {
-				step = Step.LAUNCH;
+				ship.launch(cursor);
+				step = Step.FLY;
 			}
 		});
 	}
