@@ -41,6 +41,12 @@ public class MainWindow extends Application {
 //	public final int WINDOW_HEIGHT = 600;
 	public static final Random rand = new Random();
 	
+	public enum Step {
+		PLACE, AIM, LAUNCH
+	}
+	
+	private Step step = Step.PLACE;
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -53,6 +59,8 @@ public class MainWindow extends Application {
 		
 		Pane pane = new Pane(canvas);
 		pane.setStyle("-fx-background-color: black;");
+		
+		setCanvasEvents(canvas, world);
 		
 		Scene scene = new Scene(pane);
 		stage.setTitle(WINDOW_NAME);
@@ -70,15 +78,47 @@ public class MainWindow extends Application {
 	}
 	
 	private void updateCanvas(GraphicsContext gc, World world) {
+		gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
 		DrawHelper dh = new DrawHelper(gc, world);
-		
-		dh.setFill(Color.WHITE);
 
 		for(Planet planet : world.getPlanets()) {
 			planet.draw(dh);
 		}
 		
-		new Ship(new Point2D(0.4, 0.4), 100).draw(dh);
+		if(world.getShip() != null) world.getShip().draw(dh);
+		
 		//world.getPlanet(world.getStartPlanet()).
+	}
+	
+	private void setCanvasEvents(Canvas canvas, World world) {
+		canvas.setOnMouseMoved(e -> {
+			Point2D cursor = new Point2D(e.getX(), e.getY()).multiply(1/canvas.getWidth());
+			
+			if(step == Step.PLACE) {
+				Planet startPlanet = world.getPlanet(world.getStartPlanet());
+				
+				double distance = cursor.distance(startPlanet.getPos());
+				Point2D shipPos = startPlanet.getPos().add(cursor.subtract(startPlanet.getPos()).multiply(1/distance).multiply(startPlanet.getRadius() + Ship.length/2));
+				
+				if(world.getShip() == null)
+					world.setShip(new Ship());
+				world.getShip().setPos(shipPos);
+			}
+			
+			else if(step == Step.AIM) {
+				canvas.getGraphicsContext2D().setStroke(Color.RED);
+				canvas.getGraphicsContext2D().strokeLine(cursor.getX(), cursor.getY(), world.getShip().getPos().getX(), world.getShip().getPos().getY());
+			}
+		});
+		
+		canvas.setOnMouseClicked(e -> {
+			if(step == Step.PLACE) {
+				step = Step.AIM;
+			}
+			
+			else if(step == Step.AIM) {
+				step = Step.LAUNCH;
+			}
+		});
 	}
 }

@@ -11,10 +11,14 @@ public class Ship {
 		this.rot = rot;
 	}
 
+	public Ship() {
+		
+	}
+
 	public void draw(DrawHelper dh) {
 		dh.setFill(Color.YELLOW);
 		
-		dh.fillOval(pos.getX(), pos.getY(), 0.02, 0.02);
+		dh.fillOval(pos.getX() - length/2, pos.getY() - length/2, length, length);
 		
 		//dh.fillPolygon(new double[]{0.5, 0.5, 0.6}, new double[]{0.5, 0.6, 0.5}, 3);
 	}

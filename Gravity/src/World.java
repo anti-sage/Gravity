@@ -7,12 +7,14 @@ import javafx.geometry.Point2D;
 public class World {
 	public static final int MIN_PLANETS = 3;
 	public static final int MAX_PLANETS = 10;
-	public static final double MIN_PLANET_SIZE = 0.1;
-	public static final double MAX_PLANET_SIZE = 0.4;
+	public static final double MIN_PLANET_SIZE = 0.05;
+	public static final double MAX_PLANET_SIZE = 0.2;
 	
 	private List<Planet> planets = new ArrayList<>();
 	private int startPlanet;
 	private int endPlanet;
+	
+	private Ship ship;
 	
 	public void addPlanet(Planet planet) {
 		planets.add(planet);
@@ -90,5 +92,13 @@ public class World {
 	
 	public Planet getPlanet(int i) {
 		return planets.get(i);
+	}
+
+	public Ship getShip() {
+		return ship;
+	}
+
+	public void setShip(Ship ship) {
+		this.ship = ship;
 	}
 }
