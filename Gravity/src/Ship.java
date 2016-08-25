@@ -16,7 +16,7 @@ public class Ship {
 	}
 
 	public void draw(DrawHelper dh) {
-		dh.setFill(Color.YELLOW);
+		dh.setColor(Color.YELLOW);
 		
 		dh.fillOval(pos.getX() - length/2, pos.getY() - length/2, length, length);
 		

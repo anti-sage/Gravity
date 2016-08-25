@@ -46,6 +46,7 @@ public class MainWindow extends Application {
 	}
 	
 	private Step step = Step.PLACE;
+	private AimLine line;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -79,6 +80,7 @@ public class MainWindow extends Application {
 	
 	private void updateCanvas(GraphicsContext gc, World world) {
 		gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+		
 		DrawHelper dh = new DrawHelper(gc, world);
 
 		for(Planet planet : world.getPlanets()) {
@@ -87,7 +89,7 @@ public class MainWindow extends Application {
 		
 		if(world.getShip() != null) world.getShip().draw(dh);
 		
-		//world.getPlanet(world.getStartPlanet()).
+		if(line != null) line.draw(dh);
 	}
 	
 	private void setCanvasEvents(Canvas canvas, World world) {
@@ -106,13 +108,16 @@ public class MainWindow extends Application {
 			}
 			
 			else if(step == Step.AIM) {
-				canvas.getGraphicsContext2D().setStroke(Color.RED);
-				canvas.getGraphicsContext2D().strokeLine(cursor.getX(), cursor.getY(), world.getShip().getPos().getX(), world.getShip().getPos().getY());
+				line.setEnd(cursor);
 			}
 		});
 		
 		canvas.setOnMouseClicked(e -> {
-			if(step == Step.PLACE) {
+			Point2D cursor = new Point2D(e.getX(), e.getY()).multiply(1/canvas.getWidth());
+			
+			if(step == Step.PLACE) {System.out.println("asd");
+				new AimLine(new Point2D(0, 0), new Point2D(0.5, 0.5)).draw(new DrawHelper(canvas.getGraphicsContext2D(), world));
+				this.line = new AimLine(world.getShip().getPos(), cursor);
 				step = Step.AIM;
 			}
 			

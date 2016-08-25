@@ -36,7 +36,7 @@ public class Planet {
 	}
 	
 	public void draw(DrawHelper dh) {
-		dh.setFill(Color.WHITE);
+		dh.setColor(Color.WHITE);
 		dh.fillOval(pos.getX() - radius, pos.getY() - radius, radius * 2, radius * 2);
 	}
 }

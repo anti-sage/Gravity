@@ -13,6 +13,12 @@ public class DrawHelper {
 		this.world = world;
 	}
 	
+	public void drawLine(double x1, double y1, double x2, double y2) {
+		calcSize();
+		
+		gc.strokeLine(x1 * scalar, y1 * scalar, x2 * scalar, y2 * scalar);
+	}
+	
 	public void fillOval(double x, double y, double w, double h) {
 		calcSize();
 		
@@ -30,7 +36,7 @@ public class DrawHelper {
 		gc.fillPolygon(xPoints, yPoints, nPoints);
 	}
 	
-	public void setFill(Paint p) {
+	public void setColor(Paint p) {
 		gc.setFill(p);
 		gc.setStroke(p);
 	}
