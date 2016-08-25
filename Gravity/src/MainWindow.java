@@ -56,7 +56,7 @@ public class MainWindow extends Application {
 	public void start(Stage stage) throws Exception {
 		Canvas canvas = new Canvas(700, 700);
 		
-		World world = World.createRandom();
+		World world = World.createRandom(700, 700);
 		
 		Pane pane = new Pane(canvas);
 		pane.setStyle("-fx-background-color: black;");
@@ -94,7 +94,7 @@ public class MainWindow extends Application {
 	
 	private void setCanvasEvents(Canvas canvas, World world) {
 		canvas.setOnMouseMoved(e -> {
-			Point2D cursor = new Point2D(e.getX(), e.getY()).multiply(1/canvas.getWidth());
+			Point2D cursor = new Point2D(e.getX(), e.getY());
 			
 			if(step == Step.PLACE) {
 				Planet startPlanet = world.getPlanet(world.getStartPlanet());
@@ -113,7 +113,7 @@ public class MainWindow extends Application {
 		});
 		
 		canvas.setOnMouseClicked(e -> {
-			Point2D cursor = new Point2D(e.getX(), e.getY()).multiply(1/canvas.getWidth());
+			Point2D cursor = new Point2D(e.getX(), e.getY());
 			
 			if(step == Step.PLACE) {System.out.println("asd");
 				new AimLine(new Point2D(0, 0), new Point2D(0.5, 0.5)).draw(new DrawHelper(canvas.getGraphicsContext2D(), world));

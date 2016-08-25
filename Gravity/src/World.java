@@ -7,8 +7,8 @@ import javafx.geometry.Point2D;
 public class World {
 	public static final int MIN_PLANETS = 3;
 	public static final int MAX_PLANETS = 10;
-	public static final double MIN_PLANET_SIZE = 0.05;
-	public static final double MAX_PLANET_SIZE = 0.2;
+	public static final double MIN_PLANET_SIZE = 50;
+	public static final double MAX_PLANET_SIZE = 200;
 	
 	private List<Planet> planets = new ArrayList<>();
 	private int startPlanet;
@@ -28,7 +28,7 @@ public class World {
 		return planets.size();
 	}
 	
-	public static World createRandom() {
+	public static World createRandom(double width, double height) {
 		Random r = MainWindow.rand;
 		
 		if(MAX_PLANETS < 2) return null;
@@ -39,8 +39,8 @@ public class World {
 		
 		for(int i = 0; i < numPlanets; i++) {
 			double radius = r.nextDouble() * (MAX_PLANET_SIZE - MIN_PLANET_SIZE) + MIN_PLANET_SIZE;
-			double x = r.nextDouble() * (1-radius*2) + radius;
-			double y = r.nextDouble() * (1-radius*2) + radius;
+			double x = r.nextDouble() * (width-radius*2) + radius;
+			double y = r.nextDouble() * (height-radius*2) + radius;
 			Planet planet = new Planet(new Point2D(x, y), radius);
 			
 			boolean skip = false;

@@ -4,9 +4,6 @@ import javafx.scene.paint.Paint;
 public class DrawHelper {
 	private GraphicsContext gc;
 	private World world;
-	private double width;
-	private double height;
-	private double scalar;
 	
 	public DrawHelper(GraphicsContext gc, World world) {
 		this.gc = gc;
@@ -14,36 +11,19 @@ public class DrawHelper {
 	}
 	
 	public void drawLine(double x1, double y1, double x2, double y2) {
-		calcSize();
-		
-		gc.strokeLine(x1 * scalar, y1 * scalar, x2 * scalar, y2 * scalar);
+		gc.strokeLine(x1, y1, x2, y2);
 	}
 	
 	public void fillOval(double x, double y, double w, double h) {
-		calcSize();
-		
-		gc.fillOval(x * scalar, y * scalar, w * scalar, h * scalar);
+		gc.fillOval(x, y, w, h);
 	}
 	
 	public void fillPolygon(double[] xPoints, double[] yPoints, int nPoints) {
-		calcSize();
-		
-		for(int i = 0; i < nPoints; ++i) {
-			xPoints[i] *= scalar;
-			yPoints[i] *= scalar;
-		}
-		
 		gc.fillPolygon(xPoints, yPoints, nPoints);
 	}
 	
 	public void setColor(Paint p) {
 		gc.setFill(p);
 		gc.setStroke(p);
-	}
-	
-	private void calcSize() {
-		width = gc.getCanvas().getWidth();
-		height = gc.getCanvas().getHeight();
-		scalar = Math.min(width, height);
 	}
 }

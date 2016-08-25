@@ -2,7 +2,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.paint.Color;
 
 public class Ship {
-	public static final double length = 0.02;
+	public static final double length = 10;
 	private Point2D pos;
 	private double rot;
 	
