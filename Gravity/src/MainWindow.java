@@ -47,6 +47,7 @@ public class MainWindow extends Application {
 	
 	private Step step = Step.PLACE;
 	private AimLine line;
+	private Ship ship;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -57,6 +58,9 @@ public class MainWindow extends Application {
 		Canvas canvas = new Canvas(700, 700);
 		
 		World world = World.createRandom(700, 700);
+		
+		ship = new Ship(world);
+		ship.affixToPlanet(world.getPlanet(world.getStartPlanet()));
 		
 		Pane pane = new Pane(canvas);
 		pane.setStyle("-fx-background-color: black;");
@@ -86,9 +90,8 @@ public class MainWindow extends Application {
 		for(Planet planet : world.getPlanets()) {
 			planet.draw(dh);
 		}
-		
-		if(world.getShip() != null) world.getShip().draw(dh);
-		
+
+		if(ship != null) ship.draw(dh);
 		if(line != null) line.draw(dh);
 	}
 	
@@ -97,14 +100,7 @@ public class MainWindow extends Application {
 			Point2D cursor = new Point2D(e.getX(), e.getY());
 			
 			if(step == Step.PLACE) {
-				Planet startPlanet = world.getPlanet(world.getStartPlanet());
-				
-				double distance = cursor.distance(startPlanet.getPos());
-				Point2D shipPos = startPlanet.getPos().add(cursor.subtract(startPlanet.getPos()).multiply(1/distance).multiply(startPlanet.getRadius() + Ship.length/2));
-				
-				if(world.getShip() == null)
-					world.setShip(new Ship());
-				world.getShip().setPos(shipPos);
+				ship.updatePlanetPos(cursor);
 			}
 			
 			else if(step == Step.AIM) {
@@ -115,9 +111,8 @@ public class MainWindow extends Application {
 		canvas.setOnMouseClicked(e -> {
 			Point2D cursor = new Point2D(e.getX(), e.getY());
 			
-			if(step == Step.PLACE) {System.out.println("asd");
-				new AimLine(new Point2D(0, 0), new Point2D(0.5, 0.5)).draw(new DrawHelper(canvas.getGraphicsContext2D(), world));
-				this.line = new AimLine(world.getShip().getPos(), cursor);
+			if(step == Step.PLACE) {
+				this.line = new AimLine(ship.getPos(), cursor);
 				step = Step.AIM;
 			}
 			

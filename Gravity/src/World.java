@@ -14,8 +14,6 @@ public class World {
 	private int startPlanet;
 	private int endPlanet;
 	
-	private Ship ship;
-	
 	public void addPlanet(Planet planet) {
 		planets.add(planet);
 	}
@@ -92,13 +90,5 @@ public class World {
 	
 	public Planet getPlanet(int i) {
 		return planets.get(i);
-	}
-
-	public Ship getShip() {
-		return ship;
-	}
-
-	public void setShip(Ship ship) {
-		this.ship = ship;
 	}
 }
