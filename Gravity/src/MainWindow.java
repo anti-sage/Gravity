@@ -45,9 +45,7 @@ public class MainWindow extends Application {
 		PLACE, AIM, FLY
 	}
 	
-	private Step step = Step.PLACE;
-	private AimLine line;
-	private Ship ship;
+	private Game game;
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -57,15 +55,12 @@ public class MainWindow extends Application {
 	public void start(Stage stage) throws Exception {
 		Canvas canvas = new Canvas(700, 700);
 		
-		World world = World.createRandom(700, 700);
-		
-		ship = new Ship(world);
-		ship.affixToPlanet(world.getPlanet(world.getStartPlanet()));
+		game = new Game(700, 700);
 		
 		Pane pane = new Pane(canvas);
 		pane.setStyle("-fx-background-color: black;");
 		
-		setCanvasEvents(canvas, world);
+		setCanvasEvents(canvas);
 		
 		Scene scene = new Scene(pane);
 		stage.setTitle(WINDOW_NAME);
@@ -75,55 +70,28 @@ public class MainWindow extends Application {
 		AnimationTimer timer = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
-				updateCanvas(canvas.getGraphicsContext2D(), world);
+				GraphicsContext gc = canvas.getGraphicsContext2D();
+				gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+				
+				DrawHelper dh = new DrawHelper(gc, game.getWorld());
+				
+				game.update();
+				game.draw(dh);
 			}
 		};
 		
 		timer.start();
 	}
 	
-	private void updateCanvas(GraphicsContext gc, World world) {
-		gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
-		
-		DrawHelper dh = new DrawHelper(gc, world);
-		
-		if(step == Step.FLY) {
-			ship.step();
-		}
-
-		for(Planet planet : world.getPlanets()) {
-			planet.draw(dh);
-		}
-
-		if(ship != null) ship.draw(dh);
-		if(line != null) line.draw(dh);
-	}
-	
-	private void setCanvasEvents(Canvas canvas, World world) {
+	private void setCanvasEvents(Canvas canvas) {
 		canvas.setOnMouseMoved(e -> {
 			Point2D cursor = new Point2D(e.getX(), e.getY());
-			
-			if(step == Step.PLACE) {
-				ship.updatePlanetPos(cursor);
-			}
-			
-			else if(step == Step.AIM) {
-				line.setEnd(cursor);
-			}
+			game.updateCursor(cursor);
 		});
 		
 		canvas.setOnMouseClicked(e -> {
 			Point2D cursor = new Point2D(e.getX(), e.getY());
-			
-			if(step == Step.PLACE) {
-				this.line = new AimLine(ship.getPos(), cursor);
-				step = Step.AIM;
-			}
-			
-			else if(step == Step.AIM) {
-				ship.launch(cursor);
-				step = Step.FLY;
-			}
+			game.nextStep(cursor);
 		});
 	}
 }
