@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Random;
 
 import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
 
 public class World {
 	public static final int MIN_PLANETS = 3;
@@ -70,6 +71,12 @@ public class World {
 		world.setEndPlanet(endPlanetId);
 		
 		return world;
+	}
+	
+	public void draw(GraphicsContext gc) {
+		for(Planet planet : getPlanets()) {
+			planet.draw(gc, planet == getPlanet(startPlanet), planet == getPlanet(endPlanet));
+		}
 	}
 
 	public int getStartPlanet() {

@@ -57,10 +57,7 @@ public class Game {
 	}
 	
 	public void draw(GraphicsContext gc) {
-		for(Planet planet : world.getPlanets()) {
-			planet.draw(gc);
-		}
-
+		world.draw(gc);
 		if(ship != null) ship.draw(gc);
 		if(aimLine != null) aimLine.draw(gc);
 	}

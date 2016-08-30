@@ -5,6 +5,8 @@ import javafx.scene.paint.Color;
 public class Ship {
 	public static final double LENGTH = 20;
 	public static final double MASS = 30;
+	private static final double TAKEOFF_MODIFIER = 25;
+	private static final double GRAVITY_MODIFIER = 10;
 	private Point2D pos;
 	private Point2D dir;
 	private World world;
@@ -19,7 +21,7 @@ public class Ship {
 	}
 	
 	public void launch(Point2D cursor) {
-		this.dir = cursor.subtract(pos).normalize().multiply(cursor.subtract(pos).magnitude()/25);
+		this.dir = cursor.subtract(pos).normalize().multiply(cursor.subtract(pos).magnitude()/TAKEOFF_MODIFIER);
 		step();
 	}
 	
@@ -51,7 +53,7 @@ public class Ship {
 	public Point2D getForceVector(Planet planet) {
 		Point2D dir = planet.getPos().subtract(getPos());
 		
-		return dir.normalize().multiply((getMass() * planet.getMass()) / Math.pow(dir.magnitude(), 2) / 10);
+		return dir.normalize().multiply((getMass() * planet.getMass()) / Math.pow(dir.magnitude(), 2) / GRAVITY_MODIFIER);
 	}
 	
 	public void updatePlanetPos(Point2D cursor) {
