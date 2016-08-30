@@ -4,6 +4,7 @@ import javafx.scene.paint.Color;
 
 public class Ship {
 	public static final double LENGTH = 20;
+	public static final double MASS = 50;
 	private Point2D pos;
 	private Point2D dir;
 	private World world;
@@ -23,13 +24,26 @@ public class Ship {
 	}
 	
 	public void step() {
-		Point2D newPos = pos.add(dir.normalize().multiply(2));
-		pos = newPos;
+		Point2D dir = this.dir.normalize().multiply(2);
+		for(Planet planet : world.getPlanets()) {
+			dir = dir.add(getForceVector(planet));
+		}
+		System.out.println(dir.getX() + " " + dir.getY());
+		
+		this.dir = dir;
+		
+		pos = pos.add(dir);
 	}
 	
 	public void affixToPlanet(Planet planet) {
 		this.planetFixedTo = planet;
 		updatePlanetPos(new Point2D(0,0));
+	}
+	
+	public Point2D getForceVector(Planet planet) {
+		Point2D dir = planet.getPos().subtract(getPos());
+		
+		return dir.normalize().multiply((getMass() * planet.getMass()) / Math.pow(dir.magnitude(), 2) / 10);
 	}
 	
 	public void updatePlanetPos(Point2D cursor) {
@@ -42,6 +56,10 @@ public class Ship {
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.YELLOW);
 		gc.fillOval(pos.getX() - LENGTH/2, pos.getY() - LENGTH/2, LENGTH, LENGTH);
+	}
+	
+	public double getMass() {
+		return MASS;
 	}
 
 	public Point2D getPos() {

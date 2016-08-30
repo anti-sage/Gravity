@@ -21,7 +21,7 @@ public class Planet {
 	}
 	
 	public double getMass() {
-		return ((4/3) * Math.PI * radius * radius * radius * density);
+		return ((4/3) * Math.PI * Math.pow(radius/World.MIN_PLANET_SIZE, 3) * density);
 	}
 
 	public Point2D getPos() {
