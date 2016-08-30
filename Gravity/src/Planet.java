@@ -1,4 +1,5 @@
 import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class Planet {
@@ -35,8 +36,8 @@ public class Planet {
 		return getPos().distance(other.getPos()) < this.getRadius() + other.getRadius();
 	}
 	
-	public void draw(DrawHelper dh) {
-		dh.setColor(Color.WHITE);
-		dh.fillOval(pos.getX() - radius, pos.getY() - radius, radius * 2, radius * 2);
+	public void draw(GraphicsContext gc) {
+		gc.setFill(Color.WHITE);
+		gc.fillOval(pos.getX() - radius, pos.getY() - radius, radius * 2, radius * 2);
 	}
 }

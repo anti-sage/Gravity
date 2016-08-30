@@ -1,4 +1,5 @@
 import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class Ship {
@@ -38,9 +39,9 @@ public class Ship {
 		setPos(shipPos);
 	}
 
-	public void draw(DrawHelper dh) {
-		dh.setColor(Color.YELLOW);
-		dh.fillOval(pos.getX() - LENGTH/2, pos.getY() - LENGTH/2, LENGTH, LENGTH);
+	public void draw(GraphicsContext gc) {
+		gc.setFill(Color.YELLOW);
+		gc.fillOval(pos.getX() - LENGTH/2, pos.getY() - LENGTH/2, LENGTH, LENGTH);
 	}
 
 	public Point2D getPos() {

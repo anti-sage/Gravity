@@ -1,4 +1,5 @@
 import javafx.geometry.Point2D;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class AimLine {
@@ -10,9 +11,9 @@ public class AimLine {
 		this.end = end;
 	}
 	
-	public void draw(DrawHelper dh) {
-		dh.setColor(Color.RED);
-		dh.drawLine(start.getX(), start.getY(), end.getX(), end.getY());
+	public void draw(GraphicsContext gc) {
+		gc.setStroke(Color.RED);
+		gc.strokeLine(start.getX(), start.getY(), end.getX(), end.getY());
 	}
 	
 	public Point2D getStart() {

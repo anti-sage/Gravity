@@ -73,10 +73,8 @@ public class MainWindow extends Application {
 				GraphicsContext gc = canvas.getGraphicsContext2D();
 				gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
 				
-				DrawHelper dh = new DrawHelper(gc, game.getWorld());
-				
 				game.update();
-				game.draw(dh);
+				game.draw(gc);
 			}
 		};
 		
