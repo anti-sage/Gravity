@@ -17,12 +17,15 @@ public class Game {
 				
 		ship = new Ship(world);
 		ship.affixToPlanet(world.getPlanet(world.getStartPlanet()));
+		
+		step = Step.PLACE;
 	}
 
 	public void update() {
 		if(step == Step.FLY) {
 			ship.step();
 		}
+		
 	}
 	
 	public void updateCursor(Point2D cursor) {
