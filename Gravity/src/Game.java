@@ -7,7 +7,7 @@ public class Game {
 	private AimLine aimLine;
 	
 	public enum Step {
-		PLACE, AIM, FLY
+		PLACE, AIM, FLY, CRASH
 	}
 	
 	private Step step;
@@ -16,14 +16,16 @@ public class Game {
 		world = World.createRandom(width, height);
 				
 		ship = new Ship(world);
-		ship.affixToPlanet(world.getPlanet(world.getStartPlanet()));
+		ship.affixToPlanet(world.getPlanet(world.getStartPlanet()), new Point2D(0, 0));
 		
 		step = Step.PLACE;
 	}
 
 	public void update() {
 		if(step == Step.FLY) {
-			ship.step();
+			if(ship.step()) {
+				nextStep(null);
+			}
 		}
 		
 	}
@@ -47,6 +49,10 @@ public class Game {
 		else if(step == Step.AIM) {
 			ship.launch(cursor);
 			step = Step.FLY;
+		}
+		
+		else if(step == Step.FLY) {
+			step = Step.CRASH;
 		}
 	}
 	

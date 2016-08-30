@@ -6,9 +6,9 @@ import javafx.geometry.Point2D;
 
 public class World {
 	public static final int MIN_PLANETS = 3;
-	public static final int MAX_PLANETS = 10;
-	public static final double MIN_PLANET_SIZE = 50;
-	public static final double MAX_PLANET_SIZE = 200;
+	public static final int MAX_PLANETS = 4;
+	public static final double MIN_PLANET_SIZE = 20;
+	public static final double MAX_PLANET_SIZE = 50;
 	
 	private List<Planet> planets = new ArrayList<>();
 	private int startPlanet;

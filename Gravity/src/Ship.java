@@ -4,7 +4,7 @@ import javafx.scene.paint.Color;
 
 public class Ship {
 	public static final double LENGTH = 20;
-	public static final double MASS = 50;
+	public static final double MASS = 30;
 	private Point2D pos;
 	private Point2D dir;
 	private World world;
@@ -19,25 +19,33 @@ public class Ship {
 	}
 	
 	public void launch(Point2D cursor) {
-		this.dir = cursor.subtract(pos);
+		this.dir = cursor.subtract(pos).normalize().multiply(cursor.subtract(pos).magnitude()/25);
 		step();
 	}
 	
-	public void step() {
-		Point2D dir = this.dir.normalize().multiply(2);
+	public boolean step() {
+		Point2D dir = this.dir;
+		
 		for(Planet planet : world.getPlanets()) {
 			dir = dir.add(getForceVector(planet));
 		}
-		System.out.println(dir.getX() + " " + dir.getY());
 		
 		this.dir = dir;
-		
 		pos = pos.add(dir);
+		
+		for(Planet planet : world.getPlanets()) {
+			if(planet.overlaps(this)) {
+				affixToPlanet(planet, pos);
+				return true;
+			}
+		}
+		
+		return false;
 	}
 	
-	public void affixToPlanet(Planet planet) {
+	public void affixToPlanet(Planet planet, Point2D cursor) {
 		this.planetFixedTo = planet;
-		updatePlanetPos(new Point2D(0,0));
+		updatePlanetPos(cursor);
 	}
 	
 	public Point2D getForceVector(Planet planet) {

@@ -36,6 +36,10 @@ public class Planet {
 		return getPos().distance(other.getPos()) < this.getRadius() + other.getRadius();
 	}
 	
+	public boolean overlaps(Ship ship) {
+		return getPos().distance(ship.getPos()) < this.getRadius() + ship.LENGTH / 2;
+	}
+	
 	public void draw(GraphicsContext gc) {
 		gc.setFill(Color.WHITE);
 		gc.fillOval(pos.getX() - radius, pos.getY() - radius, radius * 2, radius * 2);
