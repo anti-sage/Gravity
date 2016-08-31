@@ -5,6 +5,7 @@ public class Game {
 	private World world;
 	private Ship ship;
 	private AimLine aimLine;
+	private ReplayButton replay;
 	
 	public enum Step {
 		PLACE, AIM, FLY, CRASH
@@ -16,7 +17,7 @@ public class Game {
 		world = World.createRandom(width, height);
 				
 		ship = new Ship(world);
-		ship.affixToPlanet(world.getPlanet(world.getStartPlanet()), new Point2D(0, 0));
+		resetShip();
 		
 		step = Step.PLACE;
 	}
@@ -27,7 +28,6 @@ public class Game {
 				nextStep(null);
 			}
 		}
-		
 	}
 	
 	public void updateCursor(Point2D cursor) {
@@ -53,13 +53,28 @@ public class Game {
 		
 		else if(step == Step.FLY) {
 			step = Step.CRASH;
+			replay = new ReplayButton();
 		}
+		
+		else if(step == Step.CRASH) {
+			if(replay.contains(cursor)) {
+				resetShip();
+				aimLine = null;
+				replay = null;
+				step = Step.PLACE;
+			}
+		}
+	}
+
+	private void resetShip() {
+		ship.affixToPlanet(world.getPlanet(world.getStartPlanet()), new Point2D(0, 0));
 	}
 	
 	public void draw(GraphicsContext gc) {
 		world.draw(gc);
 		if(ship != null) ship.draw(gc);
 		if(aimLine != null) aimLine.draw(gc);
+		if(replay != null) replay.draw(gc);
 	}
 	
 	public World getWorld() {

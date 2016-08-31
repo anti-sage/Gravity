@@ -4,10 +4,11 @@ import java.util.Random;
 
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.shape.Rectangle;
 
 public class World {
 	public static final int MIN_PLANETS = 3;
-	public static final int MAX_PLANETS = 4;
+	public static final int MAX_PLANETS = 7;
 	public static final double MIN_PLANET_SIZE = 20;
 	public static final double MAX_PLANET_SIZE = 50;
 	
