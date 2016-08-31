@@ -53,7 +53,7 @@ public class Game {
 		}
 		
 		else if(step == Step.AIM) {
-			ship.launch(cursor);
+			ship.launch(aimLine.getEnd());
 			step = Step.FLY;
 		}
 		

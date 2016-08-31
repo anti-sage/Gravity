@@ -3,12 +3,14 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 public class AimLine {
+	private static final double MAX_LENGTH = 300;
+	
 	private Point2D start;
 	private Point2D end;
 	
 	public AimLine(Point2D start, Point2D end) {
 		this.start = start;
-		this.end = end;
+		setEnd(end);
 	}
 	
 	public void draw(GraphicsContext gc) {
@@ -29,6 +31,10 @@ public class AimLine {
 	}
 
 	public void setEnd(Point2D end) {
-		this.end = end;
+		if(end.subtract(this.start).magnitude() > MAX_LENGTH) {
+			this.end = this.start.add(end.subtract(this.start).normalize().multiply(MAX_LENGTH));
+		} else {
+			this.end = end;
+		}
 	}
 }
