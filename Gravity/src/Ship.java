@@ -68,6 +68,10 @@ public class Ship {
 		gc.fillOval(pos.getX() - LENGTH/2, pos.getY() - LENGTH/2, LENGTH, LENGTH);
 	}
 	
+	public Planet getPlanet() {
+		return planetFixedTo;
+	}
+	
 	public double getMass() {
 		return MASS;
 	}
